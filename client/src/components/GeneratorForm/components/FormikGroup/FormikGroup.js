@@ -22,28 +22,39 @@ const FormikGroup = (props) => {
 
   let label;
   if (!props.noLabel) {
-    if (!props.labelConfig) {
-      label = (
-        <React.Fragment>
-          {camelCaseToTitle(props.name)}{" "}
-          {props.required ? <span className="text-danger">*</span> : null}
-        </React.Fragment>
-      );
+    if (!props.labelConfig || props.labelConfig.show) {
+      if (!props.labelConfig) {
+        label = (
+          <React.Fragment>
+            {camelCaseToTitle(props.name)}{" "}
+            {props.required ? <span className="text-danger">*</span> : null}
+          </React.Fragment>
+        );
+      } else {
+        label = (
+          <React.Fragment>
+            {props.labelConfig.show}
+            {props.required ? (
+              <React.Fragment>
+                {" "}
+                <span className="text-danger">*</span>
+              </React.Fragment>
+            ) : null}
+            <span className="text-light">{props.labelConfig.hide}</span>
+          </React.Fragment>
+        );
+      }
+      label = <Form.Label htmlFor={props.name}>{label}</Form.Label>;
     } else {
       label = (
-        <React.Fragment>
-          {props.labelConfig.show}
-          {props.required ? (
-            <React.Fragment>
-              {" "}
-              <span className="text-danger">*</span>
-            </React.Fragment>
-          ) : null}
-          <span className="text-light">{props.labelConfig.hide}</span>
-        </React.Fragment>
+        <Form.Label
+          htmlFor={props.name}
+          className="d-none d-md-block text-light"
+        >
+          {props.labelConfig.hide}
+        </Form.Label>
       );
     }
-    label = <Form.Label htmlFor={props.name}>{label}</Form.Label>;
   }
 
   let field = (
@@ -163,7 +174,7 @@ const FormikGroup = (props) => {
       as={Col}
       xs={props.xs}
       md={props.md || true}
-      md={props.lg || true}
+      lg={props.lg || true}
       className={props.className}
     >
       {label}

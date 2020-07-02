@@ -270,11 +270,11 @@ const GeneratorForm = (props) => {
                     eventKey="0"
                     onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
                   >
-                    <h6>
+                    <h6 className="m-0">
                       {showAdvancedOptions ? "Hide" : "Show"} advanced options
                     </h6>
                   </Accordion.Toggle>
-                  <Accordion.Collapse className="mt-1" eventKey="0">
+                  <Accordion.Collapse className="mt-2" eventKey="0">
                     <Card className="bg-dark text-light">
                       <Card.Body>
                         <Form.Row>
