@@ -307,7 +307,7 @@ const GeneratorForm = (props) => {
             </Form.Row>
 
             <Form.Row className="mt-3">
-              <Col xs="1">
+              <Col xs="4" md="2" lg="1">
                 <Button
                   variant="outline-danger"
                   onClick={() => setShowResetModal(true)}

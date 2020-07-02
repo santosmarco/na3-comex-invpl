@@ -159,7 +159,13 @@ const FormikGroup = (props) => {
   }
 
   return (
-    <Form.Group as={Col} xs={props.xs} className={props.className}>
+    <Form.Group
+      as={Col}
+      xs={props.xs}
+      md={props.md || true}
+      md={props.lg || true}
+      className={props.className}
+    >
       {label}
       {body}
     </Form.Group>

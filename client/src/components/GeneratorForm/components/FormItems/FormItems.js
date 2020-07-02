@@ -37,7 +37,9 @@ const FormItems = (props) => {
               ? props.formikProps.values[props.name].map((item, idx) => (
                   <Form.Row key={idx} className="align-items-end">
                     <FormikGroup
-                      xs="9"
+                      xs="7"
+                      md="7"
+                      lg="8"
                       name={`${props.name}.${idx}.id`}
                       className={"mb-0 pr-0" + (idx !== 0 ? " mt-1" : "")}
                       customInvalidCssChecker={() =>
@@ -71,9 +73,10 @@ const FormItems = (props) => {
                       formikProps={props.formikProps}
                       noLabel
                       noInvalidFeedback
+                      xs
                     />
                     {idx !== 0 ? (
-                      <Col className="pl-0 ml-1" xs="1">
+                      <Col className="pl-0 ml-1" xs="2" md="1">
                         <Button
                           variant="outline-danger"
                           block
