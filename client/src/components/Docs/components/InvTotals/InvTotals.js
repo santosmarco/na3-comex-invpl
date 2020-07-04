@@ -2,9 +2,13 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
 
 const InvTotals = (props) => (
-  <Row className="mt-2">
+  <Form.Row
+    className="mt-2"
+    style={{ marginLeft: "-15px", marginRight: "-15px" }}
+  >
     <Col xs="4" className="pl-0">
       <h6 className="bg-blue-primary text-light text-center rounded py-2">
         Total <span className="font-weight-bold">Weight</span>
@@ -35,7 +39,10 @@ const InvTotals = (props) => (
       <Container fluid>
         <Row className="border-bottom">
           <Col className="py-1 font-weight-bold d-flex align-items-center">
-            {props.data.incoterm}
+            <div>
+              Goods{" "}
+              <small className="font-weight-normal text-muted">/ Items</small>
+            </div>
           </Col>
           <Col
             xs="4"
@@ -47,7 +54,7 @@ const InvTotals = (props) => (
         </Row>
         <Row className="border-bottom">
           <Col className="py-1 font-weight-bold d-flex align-items-center">
-            Freight
+            + Freight
           </Col>
           <Col
             xs="4"
@@ -59,7 +66,7 @@ const InvTotals = (props) => (
         </Row>
         <Row className="border-bottom">
           <Col className="py-1 font-weight-bold d-flex align-items-center">
-            Insurance
+            + Insurance
           </Col>
           <Col
             xs="4"
@@ -71,7 +78,7 @@ const InvTotals = (props) => (
         </Row>
         <Row className="border-bottom">
           <Col className="py-1 font-weight-bold d-flex align-items-center">
-            Total {props.data.incoterm} Amount
+            = Final Amount
           </Col>
           <Col
             xs="4"
@@ -83,7 +90,7 @@ const InvTotals = (props) => (
         </Row>
       </Container>
     </Col>
-  </Row>
+  </Form.Row>
 );
 
 export default InvTotals;

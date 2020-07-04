@@ -14,21 +14,42 @@ const PLGoods = (props) => (
     </Row>
     <Row>
       <Container>
-        <Row className="font-weight-bold text-center border-bottom">
-          <Col className="py-1 border-right">M{"&"}N</Col>
+        <Row className="font-weight-bold text-center border-bottom ">
+          <Col className="py-1 border-right">
+            <div className="d-flex h-100 align-items-center justify-content-center">
+              Marks
+            </div>
+          </Col>
           <Col xs="3" className="py-1 text-left border-right">
-            Description
+            <div className="d-flex h-100 align-items-center">Description</div>
           </Col>
-          <Col className="py-1 border-right">NCM</Col>
           <Col className="py-1 border-right">
-            Qty <small className="text-muted">(Cartons)</small>
+            <div className="d-flex h-100 align-items-center justify-content-center">
+              NCM
+            </div>
           </Col>
-          <Col className="py-1 border-right">Per Carton</Col>
           <Col className="py-1 border-right">
-            Net W <small className="text-muted">(kg)</small>
+            <div className="d-flex h-100 align-items-center justify-content-center">
+              <div>
+                Qty <small className="text-muted">(Cartons)</small>
+              </div>
+            </div>
           </Col>
-          <Col className="py-1">
-            Gross W <small className="text-muted">(kg)</small>
+          <Col className="py-1 border-right">
+            <div className="d-flex h-100 align-items-center justify-content-center">
+              Per Carton
+            </div>
+          </Col>
+          <Col xs="3">
+            <Row>
+              <Col className="border-bottom py-1">Weight</Col>
+            </Row>
+            <Row>
+              <Col className="py-1 border-right text-center font-weight-normal">
+                Net
+              </Col>
+              <Col className="py-1 text-center font-weight-normal">Gross</Col>
+            </Row>
           </Col>
         </Row>
         {props.data.items.map((item, idx) => (
@@ -56,49 +77,20 @@ const PLGoods = (props) => (
             <Col className="py-2 border-right d-flex align-items-center justify-content-center">
               {item.perCtn} Un.
             </Col>
-            <Col className="py-2 border-right d-flex align-items-center justify-content-center">
-              {item.weight.net}
-            </Col>
-            <Col className="py-2 d-flex align-items-center justify-content-center">
-              {item.weight.gross}
+            <Col xs="3">
+              <Row className="h-100">
+                <Col className="py-2 border-right d-flex align-items-center justify-content-between">
+                  <div>{item.weight.net}</div>
+                  <div>KG</div>
+                </Col>
+                <Col className="py-2 d-flex align-items-center justify-content-between">
+                  <div>{item.weight.gross}</div>
+                  <div>KG</div>
+                </Col>
+              </Row>
             </Col>
           </Row>
         ))}
-        {/*
-        {props.data.items.map((item, idx) => (
-          <Row
-            className={
-              "text-center border-bottom" + (idx % 2 === 0 ? " bg-light" : "")
-            }
-          >
-            <Col
-              xs="3"
-              className="py-2 text-left border-right d-flex align-items-center"
-            >
-              {item.description}
-            </Col>
-            <Col className="py-2 border-right d-flex align-items-center justify-content-center">
-              {item.ncm}
-            </Col>
-            <Col className="py-2 border-right d-flex align-items-center justify-content-center">
-              {item.qty}
-            </Col>
-            <Col className="py-2 border-right d-flex align-items-center justify-content-center">
-              {item.unit}
-            </Col>
-            <Col className="py-2 border-right d-flex align-items-center justify-content-between">
-              <div>USD</div>
-              <div>{item.unitPrice}</div>
-            </Col>
-            <Col
-              xs="2"
-              className="py-2 d-flex align-items-center justify-content-between"
-            >
-              <div>USD</div>
-              <div>{item.totalPrice}</div>
-            </Col>
-          </Row>
-        ))} */}
       </Container>
     </Row>
   </React.Fragment>

@@ -9,7 +9,9 @@ const DocSayTotal = (props) => {
     <Row className="border-bottom border-top py-1 mt-2 mb-3">
       <Col className="d-flex align-items-center">
         <FaChevronRight />
-        <div className="font-weight-bold mx-1">SAY TOTAL: </div>
+        <div className="font-weight-bold mx-1">
+          SAY TOTAL: <small className="text-muted">({props.description})</small>
+        </div>
         <div>{sayTotal(props.total, props.type || "currency")}</div>
       </Col>
     </Row>

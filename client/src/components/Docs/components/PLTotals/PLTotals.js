@@ -19,6 +19,14 @@ const PLTotals = (props) => (
       </Row>
       <Row className="border-bottom">
         <Col className="py-1 font-weight-bold d-flex align-items-center">
+          Volume
+        </Col>
+        <Col className="py-1 d-flex align-items-center justify-content-end">
+          {props.data.volume} m<sup>3</sup>
+        </Col>
+      </Row>
+      <Row className="border-bottom">
+        <Col className="py-1 font-weight-bold d-flex align-items-center">
           Net Weight
         </Col>
         <Col className="py-1 d-flex align-items-center justify-content-end">

@@ -91,6 +91,7 @@ export const generatePackingListData = (formData) => {
       // totals are calculated and added later
     })),
     signee: formData.signee,
+    carton: formData.carton,
   };
 
   packingList = {
@@ -100,6 +101,7 @@ export const generatePackingListData = (formData) => {
         (totalCtns, item) => totalCtns + item.ctnsQty,
         0
       ),
+      // volume is calculated and added later
       weight: {
         net: packingList.items.reduce(
           (totalNetWeight, item) => totalNetWeight + item.weight.net,
@@ -114,11 +116,12 @@ export const generatePackingListData = (formData) => {
     ...packingList,
     totals: {
       ...packingList.totals,
+      volume: packingList.carton.defaultUnitVolume * packingList.totals.ctns,
       weight: {
         ...packingList.totals.weight,
         gross:
           packingList.totals.weight.net +
-          packingList.totals.ctns * formData.carton.defaultUnitWeight,
+          packingList.totals.ctns * packingList.carton.defaultUnitWeight,
       },
     },
   };

@@ -38,6 +38,7 @@ export const stringifyPackingList = (packingList) => ({
   totals: {
     ...packingList.totals,
     ctns: formatInteger(packingList.totals.ctns),
+    volume: formatNumber(packingList.totals.volume, 3),
     weight: {
       ...packingList.totals.weight,
       gross: formatNumber(packingList.totals.weight.gross),

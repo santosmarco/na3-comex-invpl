@@ -17,20 +17,27 @@ const Invoice = (props) => {
         orderNumber: props.data.orderNumber,
       }}
       toData={props.data.to}
-      signeeData={props.data.signee}
+      signData={{
+        signee: props.data.signee,
+        numOfItems: props.data.items.length,
+      }}
       printing={props.printing}
     >
       <InvGoods data={{ items: props.data.items }} />
       <InvTotals
         data={{
-          incoterm: props.data.incoterm,
           weight: props.data.weight,
           price: props.data.totals,
         }}
       />
-      <DocSayTotal total={props.data.totals.invoiceTotal} type="currency" />
+      <DocSayTotal
+        description="Final Amount"
+        total={props.data.totals.invoiceTotal}
+        type="currency"
+      />
       <InvFooter
         data={{
+          incoterm: props.data.incoterm,
           paymentTerms: props.data.paymentTerms,
           notes: props.data.notes,
           docNumber: props.data.number,

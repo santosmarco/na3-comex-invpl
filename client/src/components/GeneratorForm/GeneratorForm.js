@@ -10,9 +10,11 @@ import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import FormikGroup from "./components/FormikGroup/FormikGroup";
 import FormItems from "./components/FormItems/FormItems";
-import FormModal from "./components/FormModal/FormModal";
+import FormModal, { NumberWarningModal } from "./components/FormModals";
 import * as utils from "../../utils";
 import useAPI from "../../api";
+
+const INCOTERMS = ["CFR", "CIF", "FOB"];
 
 const SIGNEES = [
   {
@@ -220,10 +222,10 @@ const GeneratorForm = (props) => {
             <Form.Row>
               <FormikGroup
                 name="incoterm"
-                selectOptions={[
-                  { value: "CFR", label: "CFR" },
-                  { value: "FOB", label: "FOB" },
-                ]}
+                selectOptions={INCOTERMS.map((incoterm) => ({
+                  value: incoterm,
+                  label: incoterm,
+                }))}
                 formikProps={formikProps}
                 required
               />
@@ -317,7 +319,7 @@ const GeneratorForm = (props) => {
                 </Button>
               </Col>
               <Col>
-                <Button type="submit" variant="primary" className="mr-2" block>
+                <Button type="submit" variant="primary" block>
                   Generate
                 </Button>
               </Col>
@@ -364,7 +366,7 @@ const GeneratorForm = (props) => {
                 <Button
                   variant="primary"
                   onClick={() => {
-                    if (formikProps.values.number < nextExportationNumber) {
+                    if (formikProps.values.number !== nextExportationNumber) {
                       setShowConfirmModal(false);
                       setShowNumberModal(true);
                       return;
@@ -376,51 +378,22 @@ const GeneratorForm = (props) => {
                 </Button>,
               ]}
             />
-            <FormModal
+            <NumberWarningModal
               show={showNumberModal}
               onHide={() => setShowNumberModal(false)}
-              title="Caution"
-              message={
-                <React.Fragment>
-                  <p>
-                    The process number{" "}
-                    <span className="text-monospace">
-                      {utils.formatDocNumber(formikProps.values.number)}
-                    </span>{" "}
-                    is lower than the recommended process number:{" "}
-                    <span className="text-monospace font-weight-bold">
-                      {utils.formatDocNumber(nextExportationNumber)}
-                    </span>
-                    .
-                  </p>
-                  <p>
-                    Continuing will <strong>not</strong> replace the process
-                    currently registered under the number{" "}
-                    <span className="text-monospace">
-                      {utils.formatDocNumber(formikProps.values.number)}
-                    </span>
-                    , if any.
-                  </p>
-                  <p>Are you sure you want to continue?</p>
-                </React.Fragment>
+              nextExportationNumber={nextExportationNumber}
+              currentNumber={formikProps.values.number}
+              onContinue={(shouldFixNumber = true, shouldReplace = false) =>
+                props.onGenerate(
+                  formatValues({
+                    ...formikProps.values,
+                    number: shouldFixNumber
+                      ? nextExportationNumber
+                      : formikProps.values.number,
+                  }),
+                  { database: { replace: shouldReplace } }
+                )
               }
-              headerBg="warning"
-              buttons={[
-                <Button
-                  variant="primary"
-                  onClick={() => setShowNumberModal(false)}
-                >
-                  No, take me back
-                </Button>,
-                <Button
-                  variant="outline-secondary"
-                  onClick={() => {
-                    props.onGenerate(formatValues(formikProps.values));
-                  }}
-                >
-                  Yes, continue
-                </Button>,
-              ]}
             />
           </Formik.Form>
         );

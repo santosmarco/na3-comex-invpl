@@ -1,6 +1,7 @@
 import React from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { FaExclamationCircle } from "react-icons/fa";
 
 const InvFooter = (props) => (
   <React.Fragment>
@@ -10,6 +11,8 @@ const InvFooter = (props) => (
       </Col>
       <Col>
         <div className="mb-1">
+          <span className="font-weight-bold">Incoterm:</span>{" "}
+          {props.data.incoterm} •{" "}
           <span className="font-weight-bold">Payment:</span>{" "}
           {props.data.paymentTerms}
         </div>
@@ -33,35 +36,29 @@ const InvFooter = (props) => (
       <Col className="pr-0">
         <Row>
           <Col>
-            <strong>
-              1. Please, credit our account through JPMorgan Chase Bank, NA
-            </strong>
-            <br />
-            Swift Code: CHASUS33
-            <br />
-            Account Number: 544705690
+            <div className="border-bottom mb-1">Intermediary Bank</div>
+            <div className="font-weight-bold">JPMorgan Chase Bank, NA</div>
+            <div>Swift Code: CHASUS33</div>
+            <div>Account Number: 544705690</div>
           </Col>
           <Col>
-            <strong>2. In favor of: ITAU UNIBANCO</strong>
-            <br />
-            Swift Code: ITAUBRSP
+            <div className="border-bottom mb-1">Beneficiary Bank</div>
+            <div className="font-weight-bold">Itau Unibanco</div>
+            <div>Swift Code: ITAUBRSP</div>
+            <div>IBAN: BR19 6070 1190 0048 5000 0588 081C 1</div>
           </Col>
           <Col>
-            <strong>
-              3. For further credit to: NOVA A3 INDÚSTRIA E COMÉRCIO LTDA
-            </strong>
-            <br />
-            Branch Number: 0485
-            <br />
-            Account Number: 58808-1
-            <br />
-            <strong>
-              Mention our reference:
-              <br />
-              <div className="rounded border bg-light mt-1 px-2 py-1 text-center">
-                {props.data.docNumber}
-              </div>
-            </strong>
+            <div className="border-bottom mb-1">Final Beneficiary</div>
+            <div className="font-weight-bold">Nova A3 Ind. e Com. Ltda.</div>
+            <div>Branch Number: 0485</div>
+            <div>Account Number: 58808-1</div>
+            <div className="mt-3 border-bottom mb-1 d-flex align-items-center">
+              <FaExclamationCircle className="mr-1 text-blue-primary" />
+              <div className="">Mention our Reference</div>
+            </div>
+            <div className="font-weight-bold text-center">
+              {props.data.docNumber}
+            </div>
           </Col>
         </Row>
       </Col>

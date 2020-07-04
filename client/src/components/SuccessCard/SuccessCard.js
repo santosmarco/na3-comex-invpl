@@ -1,13 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaChevronLeft } from "react-icons/fa";
+import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
 const SuccessCard = (props) => (
   <div>
-    <div className="bg-success rounded py-4 mb-5 text-center text-light">
-      <h1 className="display-4 mb-3">
-        <FaCheckCircle className="font-weight-bold mr-1" />
+    <div className="bg-success rounded py-4 px-3 mb-5 text-center text-light">
+      <h1 className="display-4 mb-4">
+        <FaCheckCircle className="font-weight-bold" />
       </h1>
       <h6>
         <span className="font-weight-bold">Success!</span> An Invoice and a
@@ -15,41 +17,28 @@ const SuccessCard = (props) => (
         <span className="text-monospace">{props.processNumber}</span>
       </h6>
     </div>
-    <div className="d-flex justify-content-between">
-      <div>
+    <Form.Row>
+      <Col xs="4" md="2" lg="1">
         <Button
           variant="outline-secondary"
-          className="mr-2"
+          className="d-flex align-items-center h-100 justify-content-center"
           onClick={props.onRunAgain}
+          block
         >
-          Run again
+          <FaChevronLeft />
         </Button>
-      </div>
-      <div>
-        <Button
-          variant="outline-primary"
-          className="mr-2"
-          onClick={props.onPrintInvoice}
-        >
-          Print Invoice
+      </Col>
+      <Col>
+        <Button onClick={props.onPrint} block>
+          Print Docs
         </Button>
-        <Button
-          variant="outline-primary"
-          className="mr-2"
-          onClick={props.onPrintPackingList}
-        >
-          Print PL
-        </Button>
-        <Button onClick={props.onPrintBoth}>Print both</Button>
-      </div>
-    </div>
+      </Col>
+    </Form.Row>
   </div>
 );
 
 SuccessCard.propTypes = {
-  onPrintInvoice: PropTypes.func.isRequired,
-  onPrintPackingList: PropTypes.func.isRequired,
-  onPrintBoth: PropTypes.func.isRequired,
+  onPrint: PropTypes.func.isRequired,
   onRunAgain: PropTypes.func.isRequired,
 };
 

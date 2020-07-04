@@ -32,20 +32,44 @@ const useAPI = () => {
   };
   api.firestore = {
     ...api.firestore,
-    saveExportationProcess: async (processData) => {
+    saveExportationProcess: async (
+      processData,
+      options = { replace: false }
+    ) => {
       let processDoc = await api.firestore.getFromCollection(
         "exportations",
         processData.invoice.number
       );
-      if (!processDoc.exists) {
-        // then process can be created
-        return api.firestore.setInCollection(
-          "exportations",
-          processData.invoice.number,
-          processData
-        );
+      let now = new Date();
+      if (!processDoc.exists || options.replace) {
+        // then process can be created, or replaced
+        if (!processDoc.exists) {
+          processData.createdAt = now;
+        } else {
+          processData.updatedAt = now;
+        }
+
+        return api.firestore
+          .setInCollection(
+            "exportations",
+            processData.invoice.number,
+            processData
+          )
+          .then(() => ({
+            status: "success",
+            message: `Process ${processData.invoice.number} have been ${
+              processDoc.exists ? "updated" : "created"
+            } successfully!`,
+          }))
+          .catch(() => ({
+            status: "error",
+            message: `There was an error while trying to ${
+              processDoc.exists ? "update" : "create"
+            } the following process: ${processData.invoice.number}.`,
+          }));
+      } else {
+        return;
       }
-      return processDoc;
     },
     getNextExportationNumber: async () => {
       let exportations = await api.firestore.getCollection("exportations");

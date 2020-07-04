@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DocContainer from "./components/DocContainer/DocContainer";
 import PLGoods from "./components/PLGoods/PLGoods";
@@ -8,6 +7,7 @@ import PLCartonSpecs from "./components/PLCartonSpecs/PLCartonSpecs";
 import PLTotals from "./components/PLTotals/PLTotals";
 import DocSayTotal from "./components/DocSayTotal/DocSayTotal";
 import PLFooter from "./components/PLFooter/PLFooter";
+import Form from "react-bootstrap/Form";
 
 const PackingList = (props) => {
   return (
@@ -19,19 +19,29 @@ const PackingList = (props) => {
         orderNumber: props.data.orderNumber,
       }}
       toData={props.data.to}
-      signeeData={props.data.signee}
+      signData={{
+        signee: props.data.signee,
+        numOfItems: props.data.items.length,
+      }}
       printing={props.printing}
     >
       <PLGoods data={{ items: props.data.items }} />
-      <Row className="mt-2">
+      <Form.Row
+        className="mt-2"
+        style={{ marginLeft: "-15px", marginRight: "-15px" }}
+      >
         <Col className="pl-0">
-          <PLCartonSpecs />
+          <PLCartonSpecs cartonData={props.data.carton} />
         </Col>
         <Col xs="4" className="pr-0">
           <PLTotals data={props.data.totals} />
         </Col>
-      </Row>
-      <DocSayTotal total={props.data.totals.ctns} type="carton" />
+      </Form.Row>
+      <DocSayTotal
+        description="Carton Boxes"
+        total={props.data.totals.ctns}
+        type="carton"
+      />
       <PLFooter />
     </DocContainer>
   );

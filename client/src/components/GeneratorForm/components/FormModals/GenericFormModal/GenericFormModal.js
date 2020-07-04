@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 
-const FormModal = (props) => {
+const GenericFormModal = (props) => {
   return (
     <Modal show={props.show} onHide={props.onHide} size="lg" centered>
       <Modal.Header
@@ -32,4 +32,4 @@ const FormModal = (props) => {
   );
 };
 
-export default FormModal;
+export default GenericFormModal;

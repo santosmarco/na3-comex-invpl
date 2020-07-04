@@ -19,10 +19,10 @@ export const formatCurrency = (num) => {
     .slice(1);
 };
 
-export const formatNumber = (num) => {
+export const formatNumber = (num, fractionDigits = 1) => {
   return new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
   }).format(num);
 };
 

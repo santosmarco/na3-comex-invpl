@@ -9,9 +9,10 @@ const PLFooter = (props) => (
     </Col>
     <Col>
       <div className="mb-1">
-        <span className="font-weight-bold">We hereby declare</span> the above
-        mentioned information is correct and true by the best of our knowledge
-        and the merchandising is of Brazilian origin.
+        <span className="font-weight-bold">We hereby declare</span> that all the
+        above-mentioned information is correct and true to the best of our
+        knowledge, and that all the described merchandise is of Brazilian
+        origin.
       </div>
     </Col>
   </Row>

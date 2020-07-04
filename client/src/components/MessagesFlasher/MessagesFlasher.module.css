@@ -1,0 +1,13 @@
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.MessagesFlasher {
+  animation-name: grow;
+  animation-duration: 0.2s;
+}

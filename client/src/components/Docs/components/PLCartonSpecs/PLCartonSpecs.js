@@ -3,22 +3,40 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const PLCartonSpecs = (props) => (
-  <React.Fragment>
-    <h6 className="bg-blue-primary text-light text-center rounded py-2">
-      Carton <span className="font-weight-bold">Specs</span>
-    </h6>
-    <Container fluid>
-      <Row className="border-bottom">
-        <Col className="py-1 font-weight-bold d-flex align-items-center">
-          Dimensions
-        </Col>
-        <Col className="py-1 d-flex align-items-center justify-content-end">
-          0.32m (W) x 0.48m (L) x 0.24m (H)
-        </Col>
-      </Row>
-    </Container>
-  </React.Fragment>
-);
+const PLCartonSpecs = (props) => {
+  return (
+    <React.Fragment>
+      <h6 className="bg-blue-primary text-light text-center rounded py-2">
+        Carton <span className="font-weight-bold">Specs</span>
+      </h6>
+      <Container fluid>
+        <Row className="border-bottom">
+          <Col className="py-1 font-weight-bold d-flex align-items-center">
+            <div>
+              Dimensions{" "}
+              <small className="font-weight-normal text-muted">(Outer)</small>
+            </div>
+          </Col>
+          <Col className="py-1 d-flex align-items-center justify-content-end">
+            {props.cartonData.defaultUnitWidth}m (W) x{" "}
+            {props.cartonData.defaultUnitLength}m (L) x{" "}
+            {props.cartonData.defaultUnitHeight}m (H)
+          </Col>
+        </Row>
+        <Row className="border-bottom">
+          <Col className="py-1 font-weight-bold d-flex align-items-center">
+            <div>
+              Volume{" "}
+              <small className="font-weight-normal text-muted">(Outer)</small>
+            </div>
+          </Col>
+          <Col className="py-1 d-flex align-items-center justify-content-end">
+            {props.cartonData.defaultUnitVolume} m<sup>3</sup>
+          </Col>
+        </Row>
+      </Container>
+    </React.Fragment>
+  );
+};
 
 export default PLCartonSpecs;

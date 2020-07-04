@@ -100,8 +100,15 @@ const FormItems = (props) => {
                   qty: "",
                 })
               }
+              disabled={props.formikProps.values[props.name].length === 3}
             >
-              Add Item
+              {props.formikProps.values[props.name].length !== 3 ? (
+                "Add Item"
+              ) : (
+                <span className="font-italic">
+                  You have reached the maximum of three items per Docs
+                </span>
+              )}
             </Button>
           </div>
         )}

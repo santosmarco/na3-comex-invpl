@@ -7,17 +7,15 @@ import DocSignArea from "../DocSignArea/DocSignArea";
 import DocFooter from "../DocFooter/DocFooter";
 
 const DocContainer = (props) => {
-  const classNames = ["d-none", "position-relative"];
-  if (props.printing) {
-    classNames.push("d-print-block");
-  }
-
   return (
-    <Container className={classNames.join(" ")} style={{ minHeight: "100vh" }}>
+    <Container
+      className="d-none d-print-block position-relative"
+      style={{ minHeight: "100vh" }}
+    >
       <DocHeader data={props.headerData} />
       <DocTo data={props.toData} />
       {props.children}
-      <DocSignArea data={props.signeeData} />
+      <DocSignArea data={props.signData} />
       <DocFooter />
     </Container>
   );

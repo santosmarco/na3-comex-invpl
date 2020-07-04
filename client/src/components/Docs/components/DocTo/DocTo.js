@@ -19,7 +19,9 @@ const DocTo = (props) => {
         <div>ZIP: {props.data.zip}</div>
         <div>{props.data.country}</div>
         <div>
-          {props.data.vat.abbr}: {props.data.vat.number}
+          <strong>
+            {props.data.vat.abbr}: {props.data.vat.number}
+          </strong>
         </div>
       </Col>
     </Row>
