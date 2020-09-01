@@ -2,6 +2,7 @@ import React from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { FaExclamationCircle } from "react-icons/fa";
+import { incotermAbbrToName } from "../../../../utils";
 
 const InvFooter = (props) => (
   <React.Fragment>
@@ -11,16 +12,20 @@ const InvFooter = (props) => (
       </Col>
       <Col>
         <div className="mb-1">
-          <span className="font-weight-bold">Incoterm:</span>{" "}
-          {props.data.incoterm} •{" "}
-          <span className="font-weight-bold">Payment:</span>{" "}
-          {props.data.paymentTerms}
+          <span className="font-weight-bold">Terms of Delivery:</span>{" "}
+          {incotermAbbrToName(props.data.incoterm)} ({props.data.incoterm})
+        </div>
+        <div>
+          <div>
+            <span className="font-weight-bold">Payment:</span>{" "}
+            {props.data.paymentTerms}
+          </div>
         </div>
         {props.data.notes.length > 0 ? (
-          <div>
+          <div className="mt-1">
             <span className="font-weight-bold">Notes:</span>{" "}
             {props.data.notes.map((note, idx) => (
-              <span>
+              <span key={idx}>
                 {note}
                 {idx !== props.data.notes.length - 1 ? " • " : null}
               </span>

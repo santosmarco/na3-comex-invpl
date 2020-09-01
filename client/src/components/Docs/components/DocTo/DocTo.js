@@ -11,7 +11,8 @@ const DocTo = (props) => {
       <Col>
         <h5>{props.data.name}</h5>
         <div>
-          {props.data.street[0]} — {props.data.street[1]}
+          {props.data.street[0]}
+          {props.data.street.length > 1 ? ` — ${props.data.street[1]}` : ""}
         </div>
         <div>
           {props.data.city} — {props.data.state}

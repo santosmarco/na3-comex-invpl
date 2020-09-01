@@ -3,9 +3,9 @@ export const getCollection = (firestoreInstance, collectionName) => {
     .collection(collectionName)
     .get()
     .then((querySnapshot) => {
-      let docs = {};
+      let docs = [];
       querySnapshot.forEach((doc) => {
-        docs[doc.id] = doc.data();
+        docs.push({ id: doc.id, ...doc.data() });
       });
       return docs;
     });

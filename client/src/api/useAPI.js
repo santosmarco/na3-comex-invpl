@@ -73,14 +73,14 @@ const useAPI = () => {
     },
     getNextExportationNumber: async () => {
       let exportations = await api.firestore.getCollection("exportations");
-      if (Object.keys(exportations).length === 0) {
+      if (exportations.length === 0) {
         return utils.formatDocNumber(1);
       }
       return utils.formatDocNumber(
         parseInt(
           Math.max(
-            ...Object.keys(exportations).map((exportationNumber) =>
-              parseInt(exportationNumber.slice(5))
+            ...exportations.map((exportation) =>
+              parseInt(exportation.id.slice(5))
             )
           )
             .toString()

@@ -5,6 +5,10 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FirebaseAppProvider } from "reactfire";
+import thunkMiddleware from "redux-thunk";
+import { createStore, applyMiddleware, compose } from "redux";
+import { Provider } from "react-redux";
+import rootReducer from "./store/reducers";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAsf2WuLhTLUH8I1iDn0uqnu9Gjy_si3M8",
@@ -17,9 +21,17 @@ const firebaseConfig = {
   measurementId: "G-7FWVR15CKY",
 };
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunkMiddleware))
+);
+
 ReactDOM.render(
   <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </FirebaseAppProvider>,
   document.getElementById("root")
 );

@@ -3,10 +3,22 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 const DocSignArea = (props) => {
+  const calcMarginTop = (numOfItems) => {
+    let marginTop;
+    if (numOfItems < 3) {
+      marginTop = 200;
+    } else if (numOfItems < 5) {
+      marginTop = 150;
+    } else {
+      marginTop = 100;
+    }
+    return marginTop + "px";
+  };
+
   return (
     <Row
       className="justify-content-end"
-      style={{ marginTop: props.data.numOfItems >= 3 ? "150px" : "200px" }}
+      style={{ marginTop: calcMarginTop(props.data.numOfItems) }}
     >
       <Col xs="5" className="border-top border-dark">
         <h6 className="text-center m-0 pt-2">

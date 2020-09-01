@@ -4,3 +4,6 @@ export * from "./genDocs";
 export * from "./stringifyDocs";
 export * from "./docsToProcessData";
 export * from "./sayTotal";
+export * from "./sortings";
+export * from "./conversions";
+export * from "./nextExpNumber";

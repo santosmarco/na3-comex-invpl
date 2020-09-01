@@ -10,8 +10,12 @@ export const generateInvoiceData = (formData) => {
       qty: item.qty,
       unit: item.defaultUnit,
       unitsPerCtn: item.unitsPerCtn,
-      unitPrice: item.defaultUnitPrice,
-      totalPrice: item.defaultUnitPrice * item.qty,
+      unitPrice:
+        item.defaultUnitPrice -
+        (formData.freightPrice + formData.insurancePrice) / item.qty,
+      totalPrice:
+        item.defaultUnitPrice * item.qty -
+        (formData.freightPrice + formData.insurancePrice),
     })),
     weight: {
       net: formData.items.reduce(

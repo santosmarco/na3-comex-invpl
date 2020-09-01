@@ -7,6 +7,8 @@ import { FaTrash } from "react-icons/fa";
 import FormikGroup from "../FormikGroup/FormikGroup";
 import { camelCaseToTitle } from "../../../../utils";
 
+const MAX_ITEMS = 5;
+
 const FormItems = (props) => {
   let label = (
     <Form.Label htmlFor={props.name}>
@@ -100,13 +102,15 @@ const FormItems = (props) => {
                   qty: "",
                 })
               }
-              disabled={props.formikProps.values[props.name].length === 3}
+              disabled={
+                props.formikProps.values[props.name].length === MAX_ITEMS
+              }
             >
-              {props.formikProps.values[props.name].length !== 3 ? (
+              {props.formikProps.values[props.name].length !== MAX_ITEMS ? (
                 "Add Item"
               ) : (
                 <span className="font-italic">
-                  You have reached the maximum of three items per Docs
+                  You have reached the maximum of {MAX_ITEMS} items per Docs
                 </span>
               )}
             </Button>

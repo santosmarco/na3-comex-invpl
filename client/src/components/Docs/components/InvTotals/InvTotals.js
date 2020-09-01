@@ -39,10 +39,7 @@ const InvTotals = (props) => (
       <Container fluid>
         <Row className="border-bottom">
           <Col className="py-1 font-weight-bold d-flex align-items-center">
-            <div>
-              Goods{" "}
-              <small className="font-weight-normal text-muted">/ Items</small>
-            </div>
+            <div>Subtotal</div>
           </Col>
           <Col
             xs="4"

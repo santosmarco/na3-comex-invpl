@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import moment from "moment";
 import * as Formik from "formik";
 import * as Yup from "yup";
@@ -12,31 +12,18 @@ import FormikGroup from "./components/FormikGroup/FormikGroup";
 import FormItems from "./components/FormItems/FormItems";
 import FormModal, { NumberWarningModal } from "./components/FormModals";
 import * as utils from "../../utils";
-import useAPI from "../../api";
+import * as constants from "../../const";
 
-const INCOTERMS = ["CFR", "CIF", "FOB"];
-
-const SIGNEES = [
-  {
-    name: "Marco A Santos",
-    dpt: "Foreign Trade",
-    role: "Manager",
-    displayName: "Marco Aurelio",
-  },
-  {
-    name: "Sérgio Grossi",
-    dpt: "Commercial",
-    role: "Manager",
-    displayName: "Sérgio Grossi",
-  },
-  { name: "Gladstone J Jr", role: "COO", displayName: "Gladstone" },
-];
+let INCOTERMS = constants.INCOTERMS.map((incoterm) => incoterm[0]);
 
 const TODAY = moment();
 
 const GeneratorForm = (props) => {
-  const api = useAPI();
-  const [nextExportationNumber, setNextExportationNumber] = useState();
+  const [nextExportationNumber] = useState(
+    utils
+      .getNextExportationNumber(props.database.collections.exportations)
+      .slice(7)
+  );
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -49,10 +36,13 @@ const GeneratorForm = (props) => {
       orderNumber:
         values.orderNumber.trim() === "" ? "N/A" : values.orderNumber.trim(),
       date: moment(values.date).format("DD/MMM/YYYY"),
-      to: props.contacts[values.to],
+      to: props.database.collections.contacts[values.to],
       items: values.items
         .filter((item) => item.id !== "")
-        .map((item) => ({ ...props.products[item.id], qty: item.qty })),
+        .map((item) => ({
+          ...props.database.collections.products[item.id],
+          qty: item.qty,
+        })),
       freightPrice:
         typeof values.freightPrice === "string"
           ? 0
@@ -69,7 +59,7 @@ const GeneratorForm = (props) => {
               .map((note) => note.trim())
               .filter((note) => note !== ""),
       withCommercialValue: values.withCommercialValue === "true",
-      signee: SIGNEES[parseInt(values.signee)],
+      signee: props.database.collections.signees[parseInt(values.signee)],
     };
 
     return formatted;
@@ -108,20 +98,6 @@ const GeneratorForm = (props) => {
     );
   };
 
-  useEffect(() => {
-    api.firestore.getNextExportationNumber().then((number) => {
-      setNextExportationNumber(parseInt(number.slice(7)));
-    });
-    // eslint-disable-next-line
-  }, []);
-
-  if (!nextExportationNumber) {
-    return (
-      <div className="border rounded py-4 text-center">
-        Getting next best process number... <strong>Please wait.</strong>
-      </div>
-    );
-  }
   return (
     <Formik.Formik
       initialValues={{
@@ -130,7 +106,7 @@ const GeneratorForm = (props) => {
         date: TODAY.format("yyyy-MM-DD"),
         to: "",
         items: [{ id: "", qty: "" }],
-        incoterm: "CFR",
+        incoterm: "FOB",
         freightPrice: "",
         insurancePrice: "",
         paymentTerms:
@@ -201,10 +177,12 @@ const GeneratorForm = (props) => {
                 labelConfig={{ show: "Addressee" }}
                 selectOptions={[
                   { value: "", label: "Choose...", disabled: true },
-                  ...Object.entries(props.contacts).map((contact) => ({
-                    value: contact[0],
-                    label: `${contact[1].name} (${contact[1].vat.abbr}: ${contact[1].vat.number})`,
-                  })),
+                  ...props.database.collections.contacts.map(
+                    (contact, idx) => ({
+                      value: idx,
+                      label: `${contact.name} (${contact.vat.abbr}: ${contact.vat.number})`,
+                    })
+                  ),
                 ]}
                 formikProps={formikProps}
                 isClearable
@@ -214,7 +192,10 @@ const GeneratorForm = (props) => {
             <Form.Row>
               <FormItems
                 name="items"
-                products={props.products}
+                products={Object.assign(
+                  {},
+                  props.database.collections.products
+                )}
                 formikProps={formikProps}
                 required
               />
@@ -224,7 +205,7 @@ const GeneratorForm = (props) => {
                 name="incoterm"
                 selectOptions={INCOTERMS.map((incoterm) => ({
                   value: incoterm,
-                  label: incoterm,
+                  label: `${incoterm} (${utils.incotermAbbrToName(incoterm)})`,
                 }))}
                 formikProps={formikProps}
                 required
@@ -292,10 +273,12 @@ const GeneratorForm = (props) => {
                           <FormikGroup
                             name="signee"
                             selectOptions={[
-                              ...SIGNEES.map((signee, idx) => ({
-                                value: idx,
-                                label: signee.displayName,
-                              })),
+                              ...props.database.collections.signees.map(
+                                (signee, idx) => ({
+                                  value: idx,
+                                  label: signee.displayName,
+                                })
+                              ),
                             ]}
                             formikProps={formikProps}
                             required
@@ -402,10 +385,6 @@ const GeneratorForm = (props) => {
   );
 };
 
-GeneratorForm.propTypes = {
-  contacts: PropTypes.object.isRequired,
-  products: PropTypes.object.isRequired,
-  onGenerate: PropTypes.func.isRequired,
-};
+const mapStateToProps = (state) => ({ database: state.database });
 
-export default GeneratorForm;
+export default connect(mapStateToProps)(GeneratorForm);
