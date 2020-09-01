@@ -29,6 +29,24 @@ const GeneratorForm = (props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showNumberModal, setShowNumberModal] = useState(false);
 
+  const checkIncoterm = (incoterm, freightPrice, insuranceRate) => {
+    if (freightPrice > 0) {
+      if (insuranceRate > 0) {
+        if (["CIF", "CPT", "CIP", "DPU", "DAP", "DDP"].includes(incoterm)) {
+          return incoterm;
+        } else {
+          return "CIF";
+        }
+      } else {
+        return "CFR";
+      }
+    } else if (["EXW", "FCA", "FAS", "FOB"].includes(incoterm)) {
+      return incoterm;
+    } else {
+      return "FOB";
+    }
+  };
+
   const formatValues = (values) => {
     let formatted = {
       ...values,
@@ -47,10 +65,10 @@ const GeneratorForm = (props) => {
         typeof values.freightPrice === "string"
           ? 0
           : parseFloat(values.freightPrice),
-      insurancePrice:
-        typeof values.insurancePrice === "string"
+      insuranceRate:
+        typeof values.insuranceRate === "string"
           ? 0
-          : parseFloat(values.insurancePrice),
+          : parseFloat(values.insuranceRate),
       invoiceNotes:
         values.invoiceNotes.trim() === ""
           ? []
@@ -60,6 +78,15 @@ const GeneratorForm = (props) => {
               .filter((note) => note !== ""),
       withCommercialValue: values.withCommercialValue === "true",
       signee: props.database.collections.signees[parseInt(values.signee)],
+    };
+
+    formatted = {
+      ...formatted,
+      incoterm: checkIncoterm(
+        formatted.incoterm,
+        formatted.freightPrice,
+        formatted.insuranceRate
+      ),
     };
 
     return formatted;
@@ -78,11 +105,13 @@ const GeneratorForm = (props) => {
               .map((value) => `${value.qty}x ${value.name}`)
               .join(", "),
       freightPrice: "USD " + utils.formatCurrency(values.freightPrice),
-      insurancePrice: "USD " + utils.formatCurrency(values.insurancePrice),
+      insuranceRate: utils.formatCurrency(values.insuranceRate) + "%",
       invoiceNotes:
         values.invoiceNotes.length === 0
           ? "None"
           : values.invoiceNotes.join("; "),
+      incoterm:
+        values.incoterm + ` (${utils.incotermAbbrToName(values.incoterm)})`,
       withCommercialValue: values.withCommercialValue ? "Yes" : "No",
       signee: values.signee.displayName,
     };
@@ -108,7 +137,7 @@ const GeneratorForm = (props) => {
         items: [{ id: "", qty: "" }],
         incoterm: "FOB",
         freightPrice: "",
-        insurancePrice: "",
+        insuranceRate: "",
         paymentTerms:
           "T/T within 120 days from the date of shipment (B/L date)",
         invoiceNotes: "",
@@ -143,7 +172,7 @@ const GeneratorForm = (props) => {
             (items) => items.some((item) => item.id)
           ),
         freightPrice: Yup.number().min(0, "Must be non-negative"),
-        insurancePrice: Yup.number().min(0, "Must be non-negative"),
+        insuranceRate: Yup.number().min(0, "Must be non-negative"),
       })}
       onSubmit={() => setShowConfirmModal(true)}
     >
@@ -219,11 +248,11 @@ const GeneratorForm = (props) => {
                 formikProps={formikProps}
               />
               <FormikGroup
-                name="insurancePrice"
+                name="insuranceRate"
                 type="number"
                 labelConfig={{ hide: "Additional Costs: Insurance" }}
                 placeholder="0.00"
-                inputGroupConfig={{ prepends: ["Insurance"], appends: ["USD"] }}
+                inputGroupConfig={{ prepends: ["Insurance"], appends: ["%"] }}
                 formikProps={formikProps}
               />
             </Form.Row>

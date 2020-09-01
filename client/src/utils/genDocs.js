@@ -10,12 +10,8 @@ export const generateInvoiceData = (formData) => {
       qty: item.qty,
       unit: item.defaultUnit,
       unitsPerCtn: item.unitsPerCtn,
-      unitPrice:
-        item.defaultUnitPrice -
-        (formData.freightPrice + formData.insurancePrice) / item.qty,
-      totalPrice:
-        item.defaultUnitPrice * item.qty -
-        (formData.freightPrice + formData.insurancePrice),
+      unitPrice: item.defaultUnitPrice - formData.freightPrice / item.qty,
+      totalPrice: item.defaultUnitPrice * item.qty - formData.freightPrice,
     })),
     weight: {
       net: formData.items.reduce(
@@ -29,7 +25,7 @@ export const generateInvoiceData = (formData) => {
     totals: {
       // items total is calculated and added later
       freight: formData.freightPrice,
-      insurance: formData.insurancePrice,
+      // insurance price is calculated and added later
       // invoice total is calculated and added later
     },
     paymentTerms: formData.paymentTerms,
@@ -56,6 +52,17 @@ export const generateInvoiceData = (formData) => {
         (itemsTotal, item) => itemsTotal + item.totalPrice,
         0
       ),
+    },
+  };
+
+  invoice = {
+    ...invoice,
+    totals: {
+      ...invoice.totals,
+      insurance:
+        (formData.insuranceRate *
+          (invoice.totals.items + invoice.totals.freight)) /
+        100,
     },
   };
 

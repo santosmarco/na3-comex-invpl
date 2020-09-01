@@ -30,7 +30,7 @@ const store = createStore(
 ReactDOM.render(
   <FirebaseAppProvider firebaseConfig={firebaseConfig}>
     <Provider store={store}>
-      <App />
+      <App testMode={false} />
     </Provider>
   </FirebaseAppProvider>,
   document.getElementById("root")

@@ -10,6 +10,9 @@ import Select from "react-select";
 const FormikGroup = (props) => {
   const generateFieldClassName = () => {
     let className = ["form-control"];
+    if (props.alignRight) {
+      className.push("text-right");
+    }
     if (
       (props.customInvalidCssChecker && props.customInvalidCssChecker()) ||
       (props.formikProps.touched[props.name] &&

@@ -34,6 +34,14 @@ const PLCartonSpecs = (props) => {
             {props.cartonData.defaultUnitVolume} m<sup>3</sup>
           </Col>
         </Row>
+        <Row className="border-bottom">
+          <Col className="py-1 font-weight-bold d-flex align-items-center">
+            <div>Net Weight</div>
+          </Col>
+          <Col className="py-1 d-flex align-items-center justify-content-end">
+            {props.cartonData.defaultUnitWeight} KG
+          </Col>
+        </Row>
       </Container>
     </React.Fragment>
   );

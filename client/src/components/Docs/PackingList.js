@@ -33,7 +33,7 @@ const PackingList = (props) => {
         <Col className="pl-0">
           <PLCartonSpecs cartonData={props.data.carton} />
         </Col>
-        <Col xs="4" className="pr-0">
+        <Col xs="5" className="pr-0">
           <PLTotals data={props.data.totals} />
         </Col>
       </Form.Row>
