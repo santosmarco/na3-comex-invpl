@@ -10,8 +10,7 @@ export const generateInvoiceData = (formData) => {
       qty: item.qty,
       unit: item.defaultUnit,
       unitsPerCtn: item.unitsPerCtn,
-      unitPrice: item.defaultUnitPrice - formData.freightPrice / item.qty,
-      totalPrice: item.defaultUnitPrice * item.qty - formData.freightPrice,
+      unitPrice: item.defaultUnitPrice,
     })),
     weight: {
       net: formData.items.reduce(
@@ -36,6 +35,17 @@ export const generateInvoiceData = (formData) => {
 
   invoice = {
     ...invoice,
+    items: invoice.items.map((item, idx) => ({
+      ...invoice.items[idx],
+      unitPrice:
+        item.unitPrice -
+        (invoice.totals.freight * item.qty) /
+          invoice.items.reduce(
+            (totalItemsQty, item) => totalItemsQty + item.qty,
+            0
+          ) /
+          item.qty,
+    })),
     weight: {
       ...invoice.weight,
       gross:
@@ -46,6 +56,21 @@ export const generateInvoiceData = (formData) => {
         ) *
           formData.carton.defaultUnitWeight,
     },
+  };
+
+  invoice = {
+    ...invoice,
+    items: invoice.items.map((item, idx) => ({
+      ...invoice.items[idx],
+      totalPrice: item.unitPrice * item.qty,
+    })),
+    totals: {
+      ...invoice.totals,
+    },
+  };
+
+  invoice = {
+    ...invoice,
     totals: {
       ...invoice.totals,
       items: invoice.items.reduce(
